@@ -17,5 +17,5 @@ O dashboard permite visualizar distribuições, relações entre variáveis e ap
 ## Pandas
 ## Plotly Express
 
-# Render
+# 📊 Render
 ## Link do gráfico https://project-vehicles-pdte.onrender.com
