@@ -75,3 +75,61 @@ if hist_button2:
         opacity=0.7,
     )
     st.plotly_chart(fig, use_container_width=True)
+
+
+""" Criando um gráfico de dispersão para analisar a relação entre preço e quilometragem 
+    com filtros para modelo, ano e preço máximo dos veículos """
+
+# Estilo do título gráfico de dispersão
+st.markdown("""
+    <style>
+        .custom-title {
+            font-size: 36px !important;
+            font-weight: bold !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+st.markdown("<p class='custom-title'>Gráfico de Dispersão com filtros — Preço vs Quilometragem<</p>",
+            unsafe_allow_html=True)
+
+# Colocando os filtros em cima do gráfico
+st.markdown("### Filtros")
+
+col1, col2, col3 = st.columns(3)
+
+# Filtro de Modelo
+with col1:
+    modelo = st.selectbox("Modelo", sorted(car_data["model"].unique()))
+
+# Filtro de Ano
+with col2:
+    ano = st.slider(
+        "Ano",
+        int(car_data["model_year"].min()),
+        int(car_data["model_year"].max())
+    )
+
+# Filtro de Preço
+with col3:
+    preco_max = st.number_input("Preço máximo", min_value=0, value=50000)
+
+
+# Aplicando os filtros
+df_filtrado = car_data[
+    (car_data["model"] == modelo) &
+    (car_data["model_year"] >= ano) &
+    (car_data["price"] <= preco_max)
+]
+
+# Criando o gráfico de dispersão com os dados filtrados
+fig = px.scatter(
+    df_filtrado,
+    x="odometer",
+    y="price",
+    color="condition",
+    title="Preço vs Quilometragem",
+    labels={"odometer": "Quilometragem", "price": "Preço"}
+)
+
+st.plotly_chart(fig, use_container_width=True)
